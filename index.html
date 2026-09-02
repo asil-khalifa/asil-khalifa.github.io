@@ -1,13 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <title>Asil Khalifa</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asil Khalifa — Software Engineer</title>
+<meta name="description" content="Asil Khalifa — Computer Science student at NIT Trichy and software engineer intern at The D. E. Shaw Group. Backend systems, LLM agents and full-stack web.">
+<meta name="author" content="Asil Khalifa">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Asil Khalifa — Software Engineer">
+<meta property="og:description" content="CSE @ NIT Trichy '27. Software Engineer Intern at The D. E. Shaw Group. Backend systems, LLM agents and full-stack web.">
+<meta property="og:url" content="https://asilkhalifa.com/">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://asilkhalifa.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<script>
+  // Set the theme before first paint so there is no flash.
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
-    <h1 id="heading">Welcome to my Website!</h1>
-    <p>This website is under construction, visit later!</p>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="mark" href="#top"><span>Asil Khalifa</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M2 12h2.6M19.4 12H22M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M19.1 4.9l-1.9 1.9M6.8 17.2l-1.9 1.9"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <span id="top"></span>
+
+  <!-- Hero -->
+  <section class="hero wrap">
+    <p class="pill reveal"><span class="dot" aria-hidden="true"></span>Open to on-site winter internships from 23 Nov 2026</p>
+    <h1 class="reveal">Asil&nbsp;Khalifa</h1>
+    <p class="lede reveal">
+      Software Engineer Intern at <strong>The D.&nbsp;E.&nbsp;Shaw Group</strong> and a final-year
+      Computer Science student at <strong>NIT&nbsp;Trichy</strong>. I build backend systems that have
+      to be provably correct — and, lately, LLM agents that check their own work before a human ever
+      sees it.
+    </p>
+    <div class="actions reveal">
+      <a class="btn btn-primary" href="mailto:asilkhalifa11@gmail.com">Get in touch</a>
+      <button class="btn" type="button" id="print-btn">Download résumé</button>
+    </div>
+    <ul class="links reveal">
+      <li><a href="https://github.com/asil-khalifa" rel="me noopener" target="_blank">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/asil-khalifa" rel="me noopener" target="_blank">LinkedIn</a></li>
+      <li><a href="mailto:asilkhalifa11@gmail.com">asilkhalifa11@gmail.com</a></li>
+      <li><span class="muted">Trichy, Tamil Nadu, India</span></li>
+    </ul>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience" class="wrap section">
+    <h2 class="section-title"><span class="num">01</span> Experience</h2>
+
+    <article class="entry reveal">
+      <div class="entry-meta">
+        <span class="date">May – Jul 2026</span>
+        <span class="place">Gurgaon, India</span>
+      </div>
+      <div class="entry-body">
+        <h3>Software Engineer Intern <span class="org">· The D. E. Shaw Group</span></h3>
+        <p class="role-note">Core Technologies — post-trade platform. <strong>Full-time return offer received.</strong></p>
+        <ul class="bullets">
+          <li>Re-architected the trade-booking parser layer into a declarative, config-driven engine with an internal DSL — collapsing <strong>~3,600 lines</strong> of hand-written, per-feed Python into <strong>~400 lines</strong> of configuration on one shared engine.</li>
+          <li>Built an LLM agent (Claude Agent SDK) that authors and self-verifies feed parsers from sample files and a business knowledge base, cutting new-feed onboarding from days of developer work to a <strong>~1-hour guided interview</strong>; it hit <strong>100% byte-for-byte accuracy</strong> on unseen files for both primary parsers.</li>
+          <li>Engineered a zero-risk rollout: a byte-for-byte equivalence harness against the legacy system, record/replay market-data mocking for hermetic tests (<strong>~470 test functions</strong>), and a feature-flagged strangler-fig migration that ships off by default with one-line rollback.</li>
+          <li>Shipped a full-stack web UI so non-developer business users can run the onboarding interview end to end, reviewing the agent's findings and answering its open questions with live human-in-the-loop feedback.</li>
+        </ul>
+        <ul class="chips">
+          <li>Python</li><li>Claude Agent SDK</li><li>Pydantic</li><li>YAML / DSL design</li><li>pytest</li><li>React</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="entry reveal">
+      <div class="entry-meta">
+        <span class="date">Aug 2024 – Present</span>
+        <span class="place">NIT Trichy</span>
+      </div>
+      <div class="entry-body">
+        <h3>Web Developer <span class="org">· Delta Force</span></h3>
+        <p class="role-note">The institute's official programming club and web team.</p>
+        <ul class="bullets">
+          <li>Build, maintain and test web applications used across the institute and by the club, working in small teams from design hand-off through deployment.</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="wrap section">
+    <h2 class="section-title"><span class="num">02</span> Projects</h2>
+
+    <div class="cards">
+      <article class="card reveal">
+        <header>
+          <h3>Superhero Callcenter</h3>
+          <span class="tag">Pragyan 2025</span>
+        </header>
+        <p>
+          A resource-management game with a 3D map, adaptive difficulty and performance-based rewards:
+          players deploy heroes to stop crimes as they surface. I designed and built the entire frontend
+          in React and TypeScript from a Figma reference, and wired it to the Go backend over REST and
+          WebSockets. Played by <strong>300+ participants</strong> over three days, with a ₹25,000 prize pool.
+        </p>
+        <ul class="chips">
+          <li>React</li><li>TypeScript</li><li>Three.js</li><li>WebSockets</li><li>Go · Echo</li><li>Redis</li><li>MongoDB</li><li>Gemini API</li>
+        </ul>
+        <p class="card-note">Team of 8</p>
+      </article>
+
+      <article class="card reveal">
+        <header>
+          <h3>DTunes</h3>
+          <span class="tag">Music streaming</span>
+        </header>
+        <p>
+          A full-stack streaming platform with JWT auth and user/artist roles (RBAC), public and private
+          playlists, and artist uploads via Multer and Cloudinary. Socket.io keeps playback in sync across
+          every device and tab signed in to the same account, and surfaces what a user's friends are
+          listening to in real time.
+        </p>
+        <ul class="chips">
+          <li>React</li><li>Node.js</li><li>Express</li><li>MongoDB</li><li>Socket.io</li><li>JWT</li>
+        </ul>
+        <p class="card-note"><a href="https://github.com/asil-khalifa/delta-task-3/tree/master" rel="noopener" target="_blank">Source on GitHub ↗</a></p>
+      </article>
+
+      <article class="card reveal">
+        <header>
+          <h3>FestApi</h3>
+          <span class="tag">Shared backend</span>
+        </header>
+        <p>
+          A shared API layer in Go's Echo framework backing every NIT Trichy fest website and app —
+          <strong>10,000+ users</strong>. Organised into controller, service and repository layers so
+          each fest team can extend it without touching the core, with PostgreSQL underneath.
+        </p>
+        <ul class="chips">
+          <li>Go · Echo</li><li>PostgreSQL</li><li>REST</li>
+        </ul>
+        <p class="card-note">Team of 3</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="wrap section">
+    <h2 class="section-title"><span class="num">03</span> Skills</h2>
+    <dl class="skills reveal">
+      <div>
+        <dt>Languages</dt>
+        <dd>Python · TypeScript · JavaScript · C++ · C · Go · SQL · YAML</dd>
+      </div>
+      <div>
+        <dt>Backend</dt>
+        <dd>Node.js · Express · Go (Echo) · MongoDB · PostgreSQL · Redis · Socket.io · REST &amp; WebSockets</dd>
+      </div>
+      <div>
+        <dt>Frontend</dt>
+        <dd>React · Next.js · HTML · CSS · Tailwind · Three.js · GSAP · Framer Motion</dd>
+      </div>
+      <div>
+        <dt>AI &amp; data</dt>
+        <dd>Claude Agent SDK · LLM agent design · Pydantic · Pandas</dd>
+      </div>
+      <div>
+        <dt>Practices</dt>
+        <dd>DSL &amp; config-driven design · pytest · record/replay testing · feature-flagged migrations · Git</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="wrap section">
+    <h2 class="section-title"><span class="num">04</span> Education</h2>
+
+    <article class="entry reveal">
+      <div class="entry-meta">
+        <span class="date">2023 – Jun 2027</span>
+        <span class="place">Trichy, India</span>
+      </div>
+      <div class="entry-body">
+        <h3>B.Tech, Computer Science and Engineering</h3>
+        <p class="role-note">National Institute of Technology, Tiruchirappalli · <strong>GPA 8.46 / 10</strong></p>
+        <ul class="bullets">
+          <li>Coursework: Data Structures &amp; Algorithms, Operating Systems, Computer Architecture, DBMS, Computer Networks, Machine Learning, OOP.</li>
+          <li>JEE Advanced AIR 3316 · JEE Mains AIR 936.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="entry reveal">
+      <div class="entry-meta">
+        <span class="date">2022 – 2023</span>
+        <span class="place">Chennai, India</span>
+      </div>
+      <div class="entry-body">
+        <h3>Science Club Secretary <span class="org">· St. John's English School &amp; Junior College</span></h3>
+        <ul class="bullets">
+          <li>Led a team of 6 to run two club activity weeks — debates, quizzes and experiments — and was student in charge for two school science tours.</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="wrap section contact">
+    <h2 class="section-title"><span class="num">05</span> Contact</h2>
+    <p class="contact-lede reveal">
+      I'm graduating in June 2027 and available full-time for on-site winter internships from
+      23 November 2026. If you're building something where correctness matters, I'd like to hear about it.
+    </p>
+    <div class="actions reveal">
+      <a class="btn btn-primary" href="mailto:asilkhalifa11@gmail.com">asilkhalifa11@gmail.com</a>
+      <a class="btn" href="https://linkedin.com/in/asil-khalifa" rel="noopener" target="_blank">LinkedIn</a>
+      <a class="btn" href="https://github.com/asil-khalifa" rel="noopener" target="_blank">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap site-footer">
+  <p>© <span id="year">2026</span> Asil Khalifa</p>
+  <p class="muted">Built by hand — no frameworks.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Asil Khalifa",
+  "url": "https://asilkhalifa.com/",
+  "email": "mailto:asilkhalifa11@gmail.com",
+  "jobTitle": "Software Engineer Intern",
+  "worksFor": { "@type": "Organization", "name": "The D. E. Shaw Group" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "National Institute of Technology, Tiruchirappalli" },
+  "sameAs": [
+    "https://github.com/asil-khalifa",
+    "https://linkedin.com/in/asil-khalifa"
+  ]
+}
+</script>
+
+<script src="script.js"></script>
 </body>
 </html>
