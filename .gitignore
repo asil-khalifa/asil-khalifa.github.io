@@ -1,0 +1,5 @@
+# Full-resolution source for portrait.jpg — 5 MB, not worth committing.
+# Regenerate the web asset with:
+#   ffmpeg -i "Passport Photo.jpg" -map_metadata -1 \
+#     -vf "crop=2600:2600:54:60,scale=640:640:flags=lanczos" -q:v 3 portrait.jpg
+Passport Photo.jpg

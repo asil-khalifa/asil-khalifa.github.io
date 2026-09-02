@@ -70,11 +70,7 @@
     sections.forEach(function (s) { spy.observe(s); });
   }
 
-  /* --- résumé (print stylesheet renders a clean PDF) ---------- */
-
-  document.getElementById('print-btn').addEventListener('click', function () {
-    window.print();
-  });
+  /* --- footer year -------------------------------------------- */
 
   document.getElementById('year').textContent = new Date().getFullYear();
 })();

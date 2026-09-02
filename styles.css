@@ -166,6 +166,27 @@ a:focus-visible, button:focus-visible {
 
 .hero {
   padding-block: clamp(3.5rem, 12vh, 7rem) clamp(3rem, 8vh, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(2rem, 6vw, 4.5rem);
+  align-items: start;
+}
+
+.portrait {
+  margin: .5rem 0 0;
+  width: clamp(9rem, 17vw, 12.5rem);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: 1fr; gap: 1.75rem; }
+  .portrait { order: -1; margin-top: 0; width: clamp(6.5rem, 26vw, 9rem); }
 }
 
 .pill {
@@ -221,6 +242,18 @@ a:focus-visible, button:focus-visible {
   transition: transform .18s ease, border-color .2s ease, background .2s ease, color .2s ease;
 }
 .btn:hover { border-color: var(--muted); transform: translateY(-1px); }
+.btn-meta {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: .05rem .3rem;
+  margin-left: .45rem;
+  vertical-align: 1px;
+}
+
 .btn-primary {
   background: var(--text);
   color: var(--bg);
@@ -439,7 +472,9 @@ a:focus-visible, button:focus-visible {
     --accent: #000; --accent-dim: #fff;
   }
   body { font-size: 10.5pt; line-height: 1.42; }
-  .site-header, .actions, .icon-btn, .skip, .site-footer, .pill { display: none !important; }
+  .site-header, .actions, .icon-btn, .skip, .site-footer, .pill,
+  .portrait { display: none !important; }
+  .hero { display: block; }
   .reveal { opacity: 1 !important; transform: none !important; }
   .wrap { max-width: none; padding-inline: 0; }
   .hero { padding-block: 0 1rem; }
