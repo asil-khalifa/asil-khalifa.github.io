@@ -57,13 +57,44 @@
   .feed h3 { margin: 0; font-size: 1rem; font-family: var(--serif); font-weight: 600; }
   .feed p { margin: 0; font-size: .875rem; color: var(--muted); line-height: 1.5; }
 
-  .badge {
-    display: inline-flex; align-items: center; gap: .35rem;
+  .badge-live {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: .45rem;
     font-size: .7rem; letter-spacing: .04em; text-transform: uppercase;
-    font-weight: 600; padding: .2rem .5rem; border-radius: 99px;
-    background: var(--accent-dim); color: var(--accent);
+    font-weight: 600; padding: .22rem .6rem; border-radius: 99px;
+    color: var(--live);
+    background: color-mix(in srgb, var(--live) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--live) 32%, transparent);
   }
-  .badge.mine { background: var(--accent); color: var(--bg); }
+  .badge-live .sep { opacity: .55; }
+
+  .pulse {
+    position: relative; flex: none;
+    width: .45rem; height: .45rem; border-radius: 99px; background: var(--live);
+  }
+  .pulse::after {
+    content: ""; position: absolute; inset: 0;
+    border-radius: 99px; background: var(--live);
+    animation: pulse-ring 2.4s cubic-bezier(.24,.6,.35,1) infinite;
+  }
+  @keyframes pulse-ring {
+    0%   { transform: scale(1);   opacity: .65; }
+    70%  { transform: scale(3.2); opacity: 0; }
+    100% { transform: scale(3.2); opacity: 0; }
+  }
+
+  /* Degraded state, set by the live check if a feed stops updating. */
+  .badge-live[data-state="warn"] {
+    color: var(--dead);
+    background: color-mix(in srgb, var(--dead) 13%, transparent);
+    border-color: color-mix(in srgb, var(--dead) 32%, transparent);
+  }
+  .badge-live[data-state="warn"] .pulse,
+  .badge-live[data-state="warn"] .pulse::after { background: var(--dead); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse::after { animation: none; }
+  }
 
   .actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: auto; }
 
@@ -123,9 +154,20 @@
     display: flex; justify-content: space-between; gap: 1rem;
   }
   details.faq summary::-webkit-details-marker { display: none; }
-  details.faq summary::after { content: "+"; color: var(--muted); }
+  details.faq summary::after {
+    content: "+"; color: var(--muted);
+    transition: transform .25s ease; transform-origin: center;
+  }
   details.faq[open] summary::after { content: "–"; }
+
+  /* Height is driven by the script below so open/close can be animated --
+     <details> gives no transitionable property on its own. */
+  .faq-body { overflow: hidden; transition: height .26s cubic-bezier(.25,.6,.3,1); }
   details.faq p { color: var(--muted); font-size: .92rem; line-height: 1.6; margin: .7rem 0 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-body { transition: none; }
+  }
 
   .note {
     border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem;
@@ -163,7 +205,7 @@
 
     <div class="feed-grid">
       <div class="feed primary">
-        <span class="badge mine">Maintained by me</span>
+        <span class="badge-live" data-state="live"><span class="pulse" aria-hidden="true"></span>Live<span class="sep"> · </span><span class="live-when">checked hourly</span></span>
         <h3>CodeChef — rated contests</h3>
         <p>Starters, Cook-Off, Lunchtime, Long Challenge and anything marked
            <code>(Rated)</code>. No Placement Prep or practice filler.</p>
@@ -176,7 +218,7 @@
       </div>
 
       <div class="feed">
-        <span class="badge mine">Maintained by me</span>
+        <span class="badge-live" data-state="live"><span class="pulse" aria-hidden="true"></span>Live<span class="sep"> · </span><span class="live-when">checked hourly</span></span>
         <h3>CodeChef — every contest</h3>
         <p>Everything CodeChef lists, including Placement Prep Weekends and
            practice events. Filter it yourself.</p>
@@ -189,7 +231,7 @@
       </div>
 
       <div class="feed">
-        <span class="badge">Not mine · verified hourly</span>
+        <span class="badge-live" data-state="live" data-feed="codeforces"><span class="pulse" aria-hidden="true"></span>Live<span class="sep"> · </span><span class="live-when">checked hourly</span></span>
         <h3>Codeforces</h3>
         <p>Maintained by <a href="https://clist.by" rel="noopener nofollow">clist.by</a>.
            Comprehensive and well kept — no reason to duplicate it.</p>
@@ -202,7 +244,7 @@
       </div>
 
       <div class="feed">
-        <span class="badge">Not mine · verified hourly</span>
+        <span class="badge-live" data-state="live" data-feed="leetcode"><span class="pulse" aria-hidden="true"></span>Live<span class="sep"> · </span><span class="live-when">checked hourly</span></span>
         <h3>LeetCode</h3>
         <p>Community-maintained. Weekly and biweekly contests. LeetCode only
            schedules about two weeks out, so it's normally a short feed.</p>
@@ -346,32 +388,32 @@
 
     <details class="faq">
       <summary>Why aren't CodeChef contests showing in my Google Calendar?</summary>
-      <p>Almost certainly because the calendar you subscribed to is no longer updated. Every public CodeChef feed I tested — including CodeChef's own — stopped years ago. A dead feed is indistinguishable from a working one with nothing scheduled, which is why it's so easy to miss. Subscribe to a maintained feed instead.</p>
+      <div class="faq-body"><p>Almost certainly because the calendar you subscribed to is no longer updated. Every public CodeChef feed I tested — including CodeChef's own — stopped years ago. A dead feed is indistinguishable from a working one with nothing scheduled, which is why it's so easy to miss. Subscribe to a maintained feed instead.</p></div>
     </details>
 
     <details class="faq">
       <summary>Is this official?</summary>
-      <p>No. It's an unofficial project and isn't affiliated with CodeChef, Codeforces or LeetCode. It reads CodeChef's public contests API and reformats it as iCalendar.</p>
+      <div class="faq-body"><p>No. It's an unofficial project and isn't affiliated with CodeChef, Codeforces or LeetCode. It reads CodeChef's public contests API and reformats it as iCalendar.</p></div>
     </details>
 
     <details class="faq">
       <summary>How often does it update?</summary>
-      <p>The feeds are rebuilt hourly. How fast that reaches you depends on your client: Apple Calendar and Outlook honour the feed's hourly refresh hint, while Google re-polls external feeds on its own schedule, often every 12–24 hours.</p>
+      <div class="faq-body"><p>The feeds are rebuilt hourly. How fast that reaches you depends on your client: Apple Calendar and Outlook honour the feed's hourly refresh hint, while Google re-polls external feeds on its own schedule, often every 12–24 hours.</p></div>
     </details>
 
     <details class="faq">
       <summary>What's the difference between the rated and all feeds?</summary>
-      <p>The rated feed covers Starters, Cook-Off, Lunchtime, Long Challenge and anything marked "(Rated)". The all feed adds everything else CodeChef lists, including Placement Prep Weekends and practice contests.</p>
+      <div class="faq-body"><p>The rated feed covers Starters, Cook-Off, Lunchtime, Long Challenge and anything marked "(Rated)". The all feed adds everything else CodeChef lists, including Placement Prep Weekends and practice contests.</p></div>
     </details>
 
     <details class="faq">
       <summary>Can I use this for Codeforces or LeetCode too?</summary>
-      <p>Those two already have good community-maintained calendars, linked above, so duplicating them would be pointless. This project checks hourly that they're still alive and flags them here if that changes.</p>
+      <div class="faq-body"><p>Those two already have good community-maintained calendars, linked above, so duplicating them would be pointless. This project checks hourly that they're still alive and flags them here if that changes.</p></div>
     </details>
 
     <details class="faq">
       <summary>Does subscribing give you access to my calendar?</summary>
-      <p>No. Subscribing to an <code>.ics</code> URL is read-only and one-directional — your client fetches a public file. I can't see your calendar, and there's nothing to sign in to.</p>
+      <div class="faq-body"><p>No. Subscribing to an <code>.ics</code> URL is read-only and one-directional — your client fetches a public file. I can't see your calendar, and there's nothing to sign in to.</p></div>
     </details>
   </section>
 
@@ -424,8 +466,83 @@
         }).join('');
         var stamp = document.getElementById('measured-on');
         if (stamp) stamp.textContent = 'Live from the hourly check';
+
+        // If a third-party feed has stopped updating, say so on its card
+        // rather than showing a green light over a broken recommendation.
+        data.feeds.forEach(function (f) {
+          var badge = document.querySelector('.badge-live[data-feed="' + f.key + '"]');
+          if (badge && f.state !== 'live') {
+            badge.dataset.state = 'warn';
+            badge.querySelector('.live-when').textContent = f.state;
+          }
+        });
       })
       .catch(function () { /* keep the static table */ });
+  })();
+
+  // Animate the FAQ open/close. <details> exposes nothing transitionable, so
+  // the toggle is intercepted and the wrapper's height animated by hand.
+  // Without JS the disclosure still works, just instantly.
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var DURATION = 260;
+
+    document.querySelectorAll('details.faq').forEach(function (d) {
+      var summary = d.querySelector('summary');
+      var body = d.querySelector('.faq-body');
+      if (!summary || !body) return;
+      var busy = false;
+
+      summary.addEventListener('click', function (e) {
+        if (reduced.matches) return;   // let the browser do it instantly
+        e.preventDefault();
+        if (busy) return;
+        busy = true;
+
+        var release = function () { body.style.height = ''; busy = false; };
+
+        if (d.open) {
+          body.style.height = body.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.style.height = '0px'; });
+          });
+          setTimeout(function () { d.open = false; release(); }, DURATION);
+        } else {
+          d.open = true;
+          var target = body.scrollHeight;
+          body.style.height = '0px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.style.height = target + 'px'; });
+          });
+          setTimeout(release, DURATION);
+        }
+      });
+    });
+  })();
+
+  // Show when CI last verified everything. Read from the workflow run rather
+  // than a committed timestamp -- a "checked at" field in the repo would
+  // change every hour and bury the history in no-op commits.
+  (function () {
+    var API = 'https://api.github.com/repos/asil-khalifa/codechef-calendar/actions/workflows/publish.yml/runs?status=success&per_page=1';
+    fetch(API)
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        var run = d && d.workflow_runs && d.workflow_runs[0];
+        if (!run) return;
+        var mins = Math.round((Date.now() - new Date(run.updated_at)) / 60000);
+        var when;
+        if (mins < 2)        when = 'just now';
+        else if (mins < 60)  when = mins + 'm ago';
+        else if (mins < 1440) when = Math.round(mins / 60) + 'h ago';
+        else                 when = Math.round(mins / 1440) + 'd ago';
+
+        document.querySelectorAll('.badge-live').forEach(function (b) {
+          if (b.dataset.state === 'warn') return;   // don't overwrite a failure
+          b.querySelector('.live-when').textContent = 'checked ' + when;
+        });
+      })
+      .catch(function () { /* leave the static "checked hourly" */ });
   })();
 </script>
 
