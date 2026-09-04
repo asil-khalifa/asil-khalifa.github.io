@@ -520,17 +520,17 @@
     });
   })();
 
-  // Show when CI last verified everything. Read from the workflow run rather
-  // than a committed timestamp -- a "checked at" field in the repo would
-  // change every hour and bury the history in no-op commits.
+  // Show when the feeds were last verified. This comes from a stamp the
+  // publisher writes, not from the Actions API: the Raspberry Pi is the
+  // primary publisher and its pushes create no workflow run, so reading the
+  // API would show a stale time even while everything was working.
   (function () {
-    var API = 'https://api.github.com/repos/asil-khalifa/codechef-calendar/actions/workflows/publish.yml/runs?status=success&per_page=1';
-    fetch(API)
+    fetch('/codechef-calendar/checked.json')
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (d) {
-        var run = d && d.workflow_runs && d.workflow_runs[0];
-        if (!run) return;
-        var mins = Math.round((Date.now() - new Date(run.updated_at)) / 60000);
+        if (!d || !d.checked_at) return;
+        var mins = Math.round((Date.now() - new Date(d.checked_at)) / 60000);
+        if (mins < 0 || mins > 60 * 24 * 14) return;   // nonsense clock, ignore
         var when;
         if (mins < 2)        when = 'just now';
         else if (mins < 60)  when = mins + 'm ago';
