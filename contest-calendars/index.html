@@ -65,20 +65,35 @@
   }
   .badge.mine { background: var(--accent); color: var(--bg); }
 
-  .url-row { display: flex; gap: .5rem; align-items: stretch; margin-top: auto; }
-  .url-row code {
-    flex: 1; min-width: 0; font-family: var(--mono); font-size: .74rem;
-    background: var(--bg-soft); border: 1px solid var(--line-soft);
-    border-radius: 8px; padding: .5rem .6rem;
-    overflow-x: auto; white-space: nowrap; color: var(--text);
+  .actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: auto; }
+
+  .btn-add {
+    flex: 1 1 12rem; text-align: center; text-decoration: none;
+    font-size: .85rem; font-weight: 600; line-height: 1.2;
+    background: var(--accent); color: var(--bg); border: 1px solid var(--accent);
+    border-radius: 8px; padding: .6rem .8rem;
+    transition: filter .15s;
   }
+  .btn-add:hover { filter: brightness(1.1); }
+
   .copy {
-    flex: none; cursor: pointer; font: inherit; font-size: .78rem; font-weight: 500;
+    flex: 0 0 auto; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 500;
     border: 1px solid var(--line); background: var(--bg-soft); color: var(--text);
-    border-radius: 8px; padding: .5rem .7rem; transition: background .15s, color .15s;
+    border-radius: 8px; padding: .6rem .8rem; transition: background .15s, color .15s;
   }
   .copy:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
   .copy[data-done="1"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* The URL wraps rather than scrolling -- a horizontal scrollbar inside a
+     card looks broken, and these strings are long by nature. */
+  code.url {
+    display: block; margin-top: .55rem;
+    font-family: var(--mono); font-size: .7rem; line-height: 1.5;
+    color: var(--muted); background: var(--bg-soft);
+    border: 1px solid var(--line-soft); border-radius: 8px;
+    padding: .45rem .55rem;
+    white-space: normal; overflow-wrap: anywhere; word-break: break-word;
+  }
 
   .table-scroll { overflow-x: auto; margin: 1.25rem 0; }
   table.feeds { border-collapse: collapse; width: 100%; font-size: .875rem; min-width: 34rem; }
@@ -152,10 +167,12 @@
         <h3>CodeChef — rated contests</h3>
         <p>Starters, Cook-Off, Lunchtime, Long Challenge and anything marked
            <code>(Rated)</code>. No Placement Prep or practice filler.</p>
-        <div class="url-row">
-          <code id="u1">https://asilkhalifa.com/codechef-calendar/codechef-rated.ics</code>
-          <button class="copy" data-for="u1" type="button">Copy</button>
+        <div class="actions">
+          <a class="btn-add" target="_blank" rel="noopener"
+             href="https://calendar.google.com/calendar/r?cid=webcal%3A%2F%2Fasilkhalifa.com%2Fcodechef-calendar%2Fcodechef-rated.ics">Add to Google Calendar</a>
+          <button class="copy" data-for="u1" type="button">Copy URL</button>
         </div>
+        <code class="url" id="u1">https://asilkhalifa.com/codechef-calendar/codechef-rated.ics</code>
       </div>
 
       <div class="feed">
@@ -163,10 +180,12 @@
         <h3>CodeChef — every contest</h3>
         <p>Everything CodeChef lists, including Placement Prep Weekends and
            practice events. Filter it yourself.</p>
-        <div class="url-row">
-          <code id="u2">https://asilkhalifa.com/codechef-calendar/codechef-all.ics</code>
-          <button class="copy" data-for="u2" type="button">Copy</button>
+        <div class="actions">
+          <a class="btn-add" target="_blank" rel="noopener"
+             href="https://calendar.google.com/calendar/r?cid=webcal%3A%2F%2Fasilkhalifa.com%2Fcodechef-calendar%2Fcodechef-all.ics">Add to Google Calendar</a>
+          <button class="copy" data-for="u2" type="button">Copy URL</button>
         </div>
+        <code class="url" id="u2">https://asilkhalifa.com/codechef-calendar/codechef-all.ics</code>
       </div>
 
       <div class="feed">
@@ -174,10 +193,12 @@
         <h3>Codeforces</h3>
         <p>Maintained by <a href="https://clist.by" rel="noopener nofollow">clist.by</a>.
            Comprehensive and well kept — no reason to duplicate it.</p>
-        <div class="url-row">
-          <code id="u3">br1o1n70iqgrrbc875vcehacjg@group.calendar.google.com</code>
-          <button class="copy" data-for="u3" type="button">Copy</button>
+        <div class="actions">
+          <a class="btn-add" target="_blank" rel="noopener"
+             href="https://calendar.google.com/calendar/r?cid=br1o1n70iqgrrbc875vcehacjg%40group.calendar.google.com">Add to Google Calendar</a>
+          <button class="copy" data-for="u3" type="button">Copy ID</button>
         </div>
+        <code class="url" id="u3">br1o1n70iqgrrbc875vcehacjg@group.calendar.google.com</code>
       </div>
 
       <div class="feed">
@@ -185,16 +206,22 @@
         <h3>LeetCode</h3>
         <p>Community-maintained. Weekly and biweekly contests. LeetCode only
            schedules about two weeks out, so it's normally a short feed.</p>
-        <div class="url-row">
-          <code id="u4">tuppslu7fl1gbkcgsuohodopfle7euv4@import.calendar.google.com</code>
-          <button class="copy" data-for="u4" type="button">Copy</button>
+        <div class="actions">
+          <a class="btn-add" target="_blank" rel="noopener"
+             href="https://calendar.google.com/calendar/r?cid=tuppslu7fl1gbkcgsuohodopfle7euv4%40import.calendar.google.com">Add to Google Calendar</a>
+          <button class="copy" data-for="u4" type="button">Copy ID</button>
         </div>
+        <code class="url" id="u4">tuppslu7fl1gbkcgsuohodopfle7euv4@import.calendar.google.com</code>
       </div>
     </div>
 
     <p class="note">
-      The Codeforces and LeetCode entries are calendar IDs, not URLs — those go
-      in <em>Other calendars → + → Subscribe to calendar</em> instead.
+      The button opens Google Calendar in a new tab and asks you to confirm —
+      you'll need to be signed in, and it has to be a browser, not the mobile
+      app. Prefer to do it by hand, or using Apple Calendar or Outlook? Copy the
+      value instead: the two CodeChef entries are feed URLs, for
+      <em>Other calendars → + → From URL</em>; the Codeforces and LeetCode ones
+      are calendar IDs, for <em>Subscribe to calendar</em>.
     </p>
   </section>
 
