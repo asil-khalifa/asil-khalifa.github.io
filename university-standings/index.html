@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>University Standings for Codeforces — a Chrome extension</title>
+<meta name="description" content="Codeforces shows how your friends placed in a contest, never how your university did. A Chrome extension that adds university standings and rating changes beside the friends tabs.">
+<meta name="author" content="Asil Khalifa">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<link rel="canonical" href="https://asilkhalifa.com/university-standings/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="University Standings for Codeforces — a Chrome extension">
+<meta property="og:description" content="Codeforces shows how your friends placed in a contest, never how your university did. This adds university standings and rating changes beside the friends tabs.">
+<meta property="og:url" content="https://asilkhalifa.com/university-standings/">
+<meta property="og:site_name" content="Asil Khalifa">
+<meta property="og:image" content="https://asilkhalifa.com/university-standings/university-standings.webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="857">
+<meta property="og:image:alt" content="University standings tab open on a Codeforces contest">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+  // Match the theme before first paint so there is no flash.
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+<style>
+  .page-head { padding-top: 3rem; }
+  .back-link {
+    display: inline-block; margin-bottom: 2rem;
+    font-size: .9rem; color: var(--muted); text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent); }
+  .lede { font-size: 1.1rem; color: var(--muted); max-width: 44rem; }
+
+  .status {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); box-shadow: var(--shadow);
+    padding: 1.1rem 1.25rem; margin: 2rem 0 0;
+  }
+  .badge {
+    flex: none;
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-size: .7rem; letter-spacing: .04em; text-transform: uppercase;
+    font-weight: 600; padding: .22rem .6rem; border-radius: 99px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .badge .dot {
+    display: inline-block; flex: none;
+    width: .45rem; height: .45rem; border-radius: 99px; background: var(--accent);
+  }
+  .status p { margin: 0; font-size: .9rem; color: var(--muted); line-height: 1.6; flex: 1 1 18rem; }
+
+  .shots { display: grid; gap: 2.25rem; margin-top: 1.5rem; }
+  figure.shot { margin: 0; }
+  /* The captures are light-background screenshots of Codeforces itself, so they keep a
+     white bed in both themes rather than being tinted to match the page. */
+  figure.shot img {
+    display: block; width: 100%; height: auto;
+    background: #fff;
+    border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  figure.shot figcaption {
+    margin-top: .7rem; font-size: .85rem; color: var(--muted); line-height: 1.65;
+    max-width: 46rem;
+  }
+
+  .grid {
+    display: grid; gap: 1rem; margin: 1.5rem 0 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+  .panel {
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); padding: 1.15rem 1.25rem;
+    display: flex; flex-direction: column; gap: .6rem;
+  }
+  .panel h3 { margin: 0; font-size: 1rem; font-family: var(--serif); font-weight: 600; }
+  .panel p  { margin: 0; font-size: .875rem; color: var(--muted); line-height: 1.6; }
+  .panel ul { margin: 0; padding-left: 1.05rem; font-size: .875rem; color: var(--muted); line-height: 1.7; }
+
+  .note {
+    border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem;
+    color: var(--muted); font-size: .92rem; margin: 1.25rem 0;
+  }
+  .steps { padding-left: 1.15rem; line-height: 1.75; color: var(--muted); }
+  .prose { color: var(--muted); line-height: 1.75; max-width: 46rem; }
+  .prose + .prose { margin-top: 1rem; }
+  .steps code, .prose code, li code, p code {
+    font-family: var(--mono); font-size: .82em;
+    background: var(--bg-soft); padding: .1rem .35rem; border-radius: 5px;
+  }
+
+  details.faq { border-bottom: 1px solid var(--line-soft); padding: .9rem 0; }
+  details.faq summary {
+    cursor: pointer; font-weight: 500; list-style: none;
+    display: flex; justify-content: space-between; gap: 1rem;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after {
+    content: "+"; color: var(--muted);
+    transition: transform .25s ease; transform-origin: center;
+  }
+  details.faq[open] summary::after { content: "\2013"; }
+
+  /* Height is driven by the script below so open/close can be animated --
+     <details> gives no transitionable property on its own. */
+  .faq-body { overflow: hidden; transition: height .26s cubic-bezier(.25,.6,.3,1); }
+  details.faq p { color: var(--muted); font-size: .92rem; line-height: 1.6; margin: .7rem 0 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-body { transition: none; }
+  }
+
+  .foot {
+    margin: 4rem 0 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .85rem; line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<main id="main" class="wrap page-head">
+
+  <a class="back-link" href="/">&larr; Asil Khalifa</a>
+
+  <h1>University standings for Codeforces</h1>
+  <p class="lede">
+    A Chrome extension that adds two tabs to a Codeforces contest &mdash; how your
+    university placed, and what the round did to everyone's rating &mdash; beside the
+    friends tabs Codeforces already has.
+  </p>
+
+  <div class="status">
+    <span class="badge"><span class="dot" aria-hidden="true"></span>Chrome Web Store &middot; not yet published</span>
+    <p>
+      Version 1.2.1, Manifest V3, Chrome 110 and later. The listing is in preparation;
+      the install button lands here once it is approved.
+    </p>
+  </div>
+  <!-- When the listing is live, replace the <p> above with the install button:
+       <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/YOUR_ID">Add to Chrome</a>
+       and change the badge text to "Chrome Web Store · live". -->
+
+  <section class="section" aria-labelledby="look">
+    <h2 class="section-title" id="look">What it looks like</h2>
+
+    <div class="shots">
+      <figure class="shot">
+        <img src="university-standings.webp" width="1600" height="857" loading="lazy" decoding="async"
+             alt="A Codeforces contest page with a University standings tab added beside Friends standings, listing 16 university participants with their problem results.">
+        <figcaption>
+          The new tabs sit in Codeforces' own second-level menu, and the table is its
+          layout, not a replacement for it. The rank column leads with the rank inside the
+          university and keeps the overall contest rank in brackets &mdash; first here also
+          placed 679th overall. The line under the toolbar is the extension showing saved
+          results immediately while it re-reads the member list behind them.
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img src="university-rating-changes.webp" width="1600" height="859" loading="lazy" decoding="async"
+             alt="The University rating changes tab listing 19 members with their old rating, new rating and signed delta.">
+        <figcaption>
+          University rating changes for the same round: official old and new ratings, the
+          signed delta, and the rank moves Codeforces announces. Any column sorts, the
+          dropdown reorders the table, and handle search narrows it &mdash; all of which
+          survive a background refresh instead of resetting under you.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="what">
+    <h2 class="section-title" id="what">What it adds</h2>
+
+    <div class="grid">
+      <article class="panel">
+        <h3>University standings</h3>
+        <p>The contest's official standings, filtered to your organization and re-ranked inside it.</p>
+        <ul>
+          <li>University rank alongside the overall contest rank</li>
+          <li>Per-problem results, points or solves, penalty and hacks</li>
+          <li>Ties share a rank, the way Codeforces does it</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h3>University rating changes</h3>
+        <p>Published rating changes for the same group, once Codeforces releases them.</p>
+        <ul>
+          <li>Official old and new ratings with the signed delta</li>
+          <li>Handle search and sortable columns</li>
+          <li>Search and sort survive a background refresh</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why">
+    <h2 class="section-title" id="why">Why this exists</h2>
+    <p class="prose">
+      Codeforces has had friends standings for years. There is no equivalent for the
+      organization on your profile, so the only way to see how your university did in a
+      contest is to scroll the full standings and recognise handles &mdash; thousands of
+      rows, for a group that is usually a few dozen people.
+    </p>
+    <p class="prose">
+      The information is all public and already on the page. This just filters it and puts
+      it where you would expect to find it.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="picking">
+    <h2 class="section-title" id="picking">How it picks your university</h2>
+    <p class="prose">
+      By default it reads the organization linked on your own signed-in Codeforces profile,
+      so there is nothing to configure and two people sharing a machine each get their own.
+      If you are signed out, or your profile has no organization set, it says so and offers
+      to let you choose one rather than quietly showing an empty table.
+    </p>
+    <ol class="steps">
+      <li>Open any public contest and click <strong>University standings</strong>.</li>
+      <li>To override the detected organization, open the extension's settings and switch to manual.</li>
+      <li>Or open any organization's rating list on Codeforces and click <strong>Use this organization</strong>.</li>
+    </ol>
+    <p class="note">
+      Members who have never been rated may not appear on an organization's rating list at
+      all, and spelling variants are separate Codeforces organizations. Both are handled by
+      the <strong>Extra members</strong> box in settings, which takes a list of handles.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="roster">
+    <h2 class="section-title" id="roster">Getting the roster right</h2>
+    <p class="prose">
+      Membership comes from the organization's public rating list, which Codeforces serves
+      200 members to a page, including inactive and retired rows. A roster is saved only
+      when the read is structurally complete &mdash; every page before the last one full,
+      and no page that came back empty. A roster quietly missing people looks exactly like a
+      correct one, which is the failure worth designing against.
+    </p>
+    <p class="prose">
+      The member count Codeforces prints next to an organization's name cannot be used for
+      that check. It is served from a cache that lags the list itself: on 11 September 2026,
+      Harvard University's list held 42 members under a heading that said 41, because
+      someone had just joined. So the count is treated as a hint &mdash; if it suggests
+      members are missing, the extension reads past the last linked page until a page adds
+      nobody new, rather than rejecting a roster that was complete all along.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="privacy">
+    <h2 class="section-title" id="privacy">What it reads, and what it keeps</h2>
+    <p class="prose">
+      It reads public Codeforces data only: the handle shown in the page header, to know
+      whose profile to check; the public organization link on that profile; the
+      organization's public rating list; and the contest's public standings and rating
+      changes.
+    </p>
+    <ul class="steps">
+      <li>Requests go directly to codeforces.com. There is no server of mine in the path.</li>
+      <li>No account, no API key, no sign-in, and no access to passwords or submissions.</li>
+      <li>Settings, member lists and filtered results stay in local extension storage, capped at 40 saved views and roughly 3&nbsp;MiB.</li>
+      <li>No ads, no analytics, no telemetry, no tracking, nothing sold.</li>
+      <li>Every line of JavaScript ships inside the package. Nothing is fetched and executed at runtime.</li>
+    </ul>
+    <p class="prose">
+      Removing the extension removes everything it stored. The full policy ships with the
+      extension and is linked from its settings page.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="limits">
+    <h2 class="section-title" id="limits">What it does not cover</h2>
+    <ul class="steps">
+      <li>Individual public contests only &mdash; not gyms, mashups or private contests.</li>
+      <li>Combined Div. 1 + Div. 2 views. Open each division's own contest page.</li>
+      <li>Virtual, practice and unofficial entries. Official participants only.</li>
+      <li>Rating changes before Codeforces publishes them &mdash; and unrated contests, such as the ICPC Online Challenges, never get them at all.</li>
+      <li>Members with no official participation in that contest simply have no row.</li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="faq">
+    <h2 class="section-title" id="faq">Questions</h2>
+
+    <details class="faq">
+      <summary>Do I need a Codeforces account?</summary>
+      <div class="faq-body"><p>Only for automatic detection, which reads the organization from the profile you are signed in as. Choose an organization manually and the extension works signed out. There is nothing to sign in to on my side either way.</p></div>
+    </details>
+
+    <details class="faq">
+      <summary>Does it work for organizations that aren't universities?</summary>
+      <div class="faq-body"><p>Yes. Codeforces treats every organization the same way, so a company or a club works identically &mdash; the tabs say "university" because that is what almost everyone uses it for.</p></div>
+    </details>
+
+    <details class="faq">
+      <summary>Someone from my university is missing. Why?</summary>
+      <div class="faq-body"><p>An organization's rating list is not a directory of everyone who ever registered there. Members who have never been rated may not be listed, and a differently spelled organization name is a separate organization on Codeforces. Add the missing handles in the Extra members box in settings.</p></div>
+    </details>
+
+    <details class="faq">
+      <summary>Why are there no rating changes for this contest?</summary>
+      <div class="faq-body"><p>Either Codeforces has not published them yet, or the contest is unrated and never will have them. Long unrated events such as the ICPC Online Challenges fall into the second case, and the extension says which one applies instead of asking you to retry forever.</p></div>
+    </details>
+
+    <details class="faq">
+      <summary>Is this official?</summary>
+      <div class="faq-body"><p>No. It is an independent project, not affiliated with Codeforces or with any university. It reads the same public pages and public API you can open yourself.</p></div>
+    </details>
+
+    <details class="faq">
+      <summary>Does it hammer the Codeforces API?</summary>
+      <div class="faq-body"><p>No. Requests are paced with a gap between them and coordinated across tabs, member lists are re-read about once a day, and saved results are shown immediately while any refresh happens in the background.</p></div>
+    </details>
+  </section>
+
+  <p class="foot">
+    Independent project &middot; not affiliated with Codeforces or any university.<br>
+    Codeforces data is public and belongs to Codeforces.<br>
+    Built by <a href="/">Asil Khalifa</a>.
+  </p>
+
+</main>
+
+<script>
+  // Animate the FAQ open/close. <details> exposes nothing transitionable, so
+  // the toggle is intercepted and the wrapper's height animated by hand.
+  // Without JS the disclosure still works, just instantly.
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var DURATION = 260;
+
+    document.querySelectorAll('details.faq').forEach(function (d) {
+      var summary = d.querySelector('summary');
+      var body = d.querySelector('.faq-body');
+      if (!summary || !body) return;
+      var busy = false;
+
+      summary.addEventListener('click', function (e) {
+        if (reduced.matches) return;   // let the browser do it instantly
+        e.preventDefault();
+        if (busy) return;
+        busy = true;
+
+        var release = function () { body.style.height = ''; busy = false; };
+
+        if (d.open) {
+          body.style.height = body.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.style.height = '0px'; });
+          });
+          setTimeout(function () { d.open = false; release(); }, DURATION);
+        } else {
+          d.open = true;
+          var target = body.scrollHeight;
+          body.style.height = '0px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.style.height = target + 'px'; });
+          });
+          setTimeout(release, DURATION);
+        }
+      });
+    });
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "University standings for Codeforces",
+      "description": "A Chrome extension that adds university contest standings and published rating changes to Codeforces, beside the existing friends tabs.",
+      "url": "https://asilkhalifa.com/university-standings/",
+      "image": "https://asilkhalifa.com/university-standings/university-standings.webp",
+      "datePublished": "2026-09-11",
+      "dateModified": "2026-09-11",
+      "inLanguage": "en",
+      "author": { "@type": "Person", "name": "Asil Khalifa", "url": "https://asilkhalifa.com/" },
+      "publisher": { "@type": "Person", "name": "Asil Khalifa", "url": "https://asilkhalifa.com/" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "https://asilkhalifa.com/university-standings/" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "University Standings for Codeforces",
+      "description": "Adds university contest standings and rating changes to Codeforces, including active and inactive organization members.",
+      "applicationCategory": "BrowserApplication",
+      "operatingSystem": "Chrome 110 or later",
+      "softwareVersion": "1.2.1",
+      "screenshot": "https://asilkhalifa.com/university-standings/university-standings.webp",
+      "author": { "@type": "Person", "name": "Asil Khalifa", "url": "https://asilkhalifa.com/" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need a Codeforces account to see university standings?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Only for automatic detection, which reads the organization from the profile you are signed in as. If you choose an organization manually the extension works signed out." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work for organizations that are not universities?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Codeforces treats every organization the same way, so a company or a club works identically." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is someone from my university missing from the standings?",
+          "acceptedAnswer": { "@type": "Answer", "text": "An organization's rating list is not a directory of everyone who registered there. Members who have never been rated may not be listed, and a differently spelled organization name is a separate organization on Codeforces. Missing handles can be added in the Extra members setting." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why are there no rating changes for this Codeforces contest?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Either Codeforces has not published them yet, or the contest is unrated and never will have them. Long unrated events such as the ICPC Online Challenges fall into the second case." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is University Standings for Codeforces official?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It is an independent project, not affiliated with Codeforces or with any university. It reads the same public pages and public API anyone can open." }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Asil Khalifa", "item": "https://asilkhalifa.com/" },
+        { "@type": "ListItem", "position": 2, "name": "University standings", "item": "https://asilkhalifa.com/university-standings/" }
+      ]
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
