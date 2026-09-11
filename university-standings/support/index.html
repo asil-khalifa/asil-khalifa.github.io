@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Support — University Standings for Codeforces</title>
+<meta name="description" content="Get help with the University Standings for Codeforces Chrome extension: email support, what to include in a bug report, and fixes for the usual problems.">
+<meta name="author" content="Asil Khalifa">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<link rel="canonical" href="https://asilkhalifa.com/university-standings/support/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Support — University Standings for Codeforces">
+<meta property="og:description" content="Email support for the University Standings for Codeforces Chrome extension.">
+<meta property="og:url" content="https://asilkhalifa.com/university-standings/support/">
+<meta property="og:site_name" content="Asil Khalifa">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+  // Match the theme before first paint so there is no flash.
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+<style>
+  .page-head { padding-top: 3rem; }
+  .back-link {
+    display: inline-block; margin-bottom: 2rem;
+    font-size: .9rem; color: var(--muted); text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent); }
+  .lede { font-size: 1.1rem; color: var(--muted); max-width: 44rem; }
+
+  .mailbox {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); box-shadow: var(--shadow);
+    padding: 1.35rem 1.5rem; margin: 2rem 0 0; max-width: 46rem;
+  }
+  .mailbox .addr {
+    margin: 0; flex: 1 1 14rem;
+    font-family: var(--mono); font-size: .95rem; color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .mailbox .hint { flex: 1 1 100%; margin: 0; font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+  .prose { color: var(--muted); line-height: 1.75; max-width: 46rem; }
+  .prose + .prose { margin-top: 1rem; }
+  .steps { padding-left: 1.15rem; line-height: 1.75; color: var(--muted); max-width: 46rem; }
+  .steps li + li { margin-top: .4rem; }
+  .steps code, .prose code, li code, p code {
+    font-family: var(--mono); font-size: .82em;
+    background: var(--bg-soft); padding: .1rem .35rem; border-radius: 5px;
+  }
+  dl.fixes { margin: 0; max-width: 46rem; }
+  dl.fixes dt {
+    font-weight: 600; color: var(--text); margin-top: 1.35rem; font-size: .95rem;
+  }
+  dl.fixes dt:first-child { margin-top: 0; }
+  dl.fixes dd {
+    margin: .35rem 0 0; color: var(--muted); line-height: 1.7; font-size: .92rem;
+  }
+  .foot {
+    margin: 4rem 0 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .85rem; line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<main id="main" class="wrap page-head">
+
+  <a class="back-link" href="/university-standings/">&larr; University standings</a>
+
+  <h1>Support</h1>
+  <p class="lede">
+    Something broken, something missing, or a question the
+    <a href="/university-standings/#faq">FAQ</a> does not answer? Send an email. There is no
+    ticket system, no account and nothing to sign up for.
+  </p>
+
+  <div class="mailbox">
+    <p class="addr">support@asilkhalifa.com</p>
+    <a class="btn btn-primary" href="mailto:support@asilkhalifa.com?subject=University%20Standings%20for%20Codeforces">Email support</a>
+    <p class="hint">
+      It is a real inbox that forwards to me. I read everything; replies can take a few days,
+      because this is a side project rather than a company.
+    </p>
+  </div>
+
+  <section class="section" aria-labelledby="include">
+    <h2 class="section-title" id="include">What to include</h2>
+    <p class="prose">
+      Most of what I would otherwise have to ask for, in one message. None of it is required
+      &mdash; send what you have and I will ask if something matters.
+    </p>
+    <ul class="steps">
+      <li>The contest URL you were looking at, for example <code>codeforces.com/contest/2210/standings</code>.</li>
+      <li>Which tab &mdash; university standings, or university rating changes.</li>
+      <li>The organization, and whether it was detected automatically or chosen manually.</li>
+      <li>The exact message on screen, if there was one. A screenshot is ideal.</li>
+      <li>The extension version, from <code>chrome://extensions</code>.</li>
+    </ul>
+    <p class="prose">
+      Please do not send your password, and there is never a reason to send an API key &mdash;
+      the extension does not use one.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="first">
+    <h2 class="section-title" id="first">Try this first</h2>
+    <p class="prose">
+      Four things account for nearly every report, and all of them are quicker to fix yourself
+      than to wait on an email.
+    </p>
+
+    <dl class="fixes">
+      <dt>The university tabs are not there at all</dt>
+      <dd>
+        Reload the Codeforces tab. A freshly installed or updated extension does not attach to
+        pages that were already open. The tabs appear on an individual contest, such as
+        <code>/contest/&lt;id&gt;/standings</code> &mdash; not on gyms, mashups or a combined
+        Div. 1 + Div. 2 view.
+      </dd>
+
+      <dt>It says there are no rating changes</dt>
+      <dd>
+        Either Codeforces has not published them yet, or the contest is unrated and never will
+        have them. Long unrated events such as the ICPC Online Challenges are the second case,
+        and the extension now says which one applies.
+      </dd>
+
+      <dt>Someone from my university is missing</dt>
+      <dd>
+        An organization's rating list is not a directory of everyone who registered there, so
+        members who have never been rated may not be listed &mdash; and a differently spelled
+        organization name is a separate organization on Codeforces. Add the missing handles in
+        the <strong>Extra members</strong> box in settings, then use <strong>Refresh
+        members</strong>.
+      </dd>
+
+      <dt>It is showing the wrong university, or an old one</dt>
+      <dd>
+        The detected organization is remembered for about an hour and the member list for about
+        a day. After changing your organization on Codeforces, open settings and use
+        <strong>Refresh members</strong>, or <strong>Try detection again</strong> on the setup
+        screen, rather than waiting it out.
+      </dd>
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="scope">
+    <h2 class="section-title" id="scope">What I cannot help with</h2>
+    <p class="prose">
+      This is an independent extension, not affiliated with Codeforces. Anything about your
+      Codeforces account, your rating, a contest verdict or a hack is theirs, not mine
+      &mdash; those go to <a href="https://codeforces.com/" rel="noopener">Codeforces</a>. I
+      also cannot see your data: the extension has no server, so there is no account of yours
+      for me to look up.
+    </p>
+  </section>
+
+  <p class="foot">
+    Independent project &middot; not affiliated with Codeforces or any university.<br>
+    <a href="/university-standings/">About the extension</a> &middot;
+    <a href="/university-standings/privacy/">Privacy policy</a><br>
+    Built by <a href="/">Asil Khalifa</a>.
+  </p>
+
+</main>
+
+</body>
+</html>
