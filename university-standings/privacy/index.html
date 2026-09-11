@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Privacy policy — University Standings for Codeforces</title>
+<meta name="description" content="Privacy policy for the University Standings for Codeforces Chrome extension: what it reads, what it stores locally, and what never leaves your browser.">
+<meta name="author" content="Asil Khalifa">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+
+<link rel="canonical" href="https://asilkhalifa.com/university-standings/privacy/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Privacy policy — University Standings for Codeforces">
+<meta property="og:description" content="What the extension reads, what it stores locally, and what never leaves your browser.">
+<meta property="og:url" content="https://asilkhalifa.com/university-standings/privacy/">
+<meta property="og:site_name" content="Asil Khalifa">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<script>
+  // Match the theme before first paint so there is no flash.
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+<style>
+  .page-head { padding-top: 3rem; }
+  .back-link {
+    display: inline-block; margin-bottom: 2rem;
+    font-size: .9rem; color: var(--muted); text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent); }
+  .lede { font-size: 1.1rem; color: var(--muted); max-width: 44rem; }
+  .stamp {
+    font-family: var(--mono); font-size: .8rem; color: var(--muted);
+    margin-top: .85rem; letter-spacing: .02em;
+  }
+  .prose { color: var(--muted); line-height: 1.75; max-width: 46rem; }
+  .prose + .prose { margin-top: 1rem; }
+  .steps { padding-left: 1.15rem; line-height: 1.75; color: var(--muted); max-width: 46rem; }
+  .steps li + li { margin-top: .4rem; }
+  .steps code, .prose code, li code, p code {
+    font-family: var(--mono); font-size: .82em;
+    background: var(--bg-soft); padding: .1rem .35rem; border-radius: 5px;
+  }
+  .note {
+    border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem;
+    color: var(--muted); font-size: .92rem; margin: 1.25rem 0; max-width: 46rem;
+  }
+  .foot {
+    margin: 4rem 0 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .85rem; line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<main id="main" class="wrap page-head">
+
+  <a class="back-link" href="/university-standings/">&larr; University standings</a>
+
+  <h1>Privacy policy</h1>
+  <p class="lede">
+    University Standings for Codeforces is a Chrome extension that filters public Codeforces
+    contest results down to one organization. It has no server, no account and no analytics,
+    so there is very little to say here &mdash; but what there is, is said precisely.
+  </p>
+  <p class="stamp">Version 1.2.1 &middot; Effective 11 September 2026</p>
+
+  <section class="section" aria-labelledby="reads">
+    <h2 class="section-title" id="reads">What it reads</h2>
+    <p class="prose">
+      Everything the extension reads is public Codeforces data that you could open in a browser
+      tab yourself.
+    </p>
+    <ul class="steps">
+      <li>The handle shown in the Codeforces page header, to know whose profile to look at. Viewing someone else's profile does not change this.</li>
+      <li>The public organization link on that profile, in automatic mode.</li>
+      <li>Every page of that organization's public rating list, to build the member roster.</li>
+      <li>The contest's public standings and published rating changes, from the Codeforces API.</li>
+    </ul>
+    <p class="prose">
+      It does not read your password, your API key, your submissions, your friend list, or your
+      browsing history. It has no access to any site other than <code>codeforces.com</code>.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="stores">
+    <h2 class="section-title" id="stores">What it stores, and where</h2>
+    <p class="prose">
+      All of it lives in Chrome's local extension storage on your own machine, and persists
+      across browser restarts:
+    </p>
+    <ul class="steps">
+      <li>Your chosen organization and any extra handles you entered.</li>
+      <li>The detected link between your signed-in handle and its organization, rechecked about every hour.</li>
+      <li>The cached public member roster &mdash; handles, ratings, country flag and the time it was fetched &mdash; rechecked about every 24 hours.</li>
+      <li>Filtered contest results, so a view you have already opened appears instantly next time. This cache is bounded to 40 views and roughly 3&nbsp;MiB, evicting the oldest first.</li>
+    </ul>
+    <p class="prose">
+      Full contest responses are held in memory for about a minute and never written to storage.
+      Nothing is synced to an account, and nothing is sent to me.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="leaves">
+    <h2 class="section-title" id="leaves">What leaves your browser</h2>
+    <p class="prose">
+      Requests go directly to <code>codeforces.com</code> and nowhere else. There is no server
+      of mine anywhere in the path, so there is no point at which I could collect anything even
+      if I wanted to.
+    </p>
+    <p class="prose">
+      Codeforces therefore receives what any web request gives it: your IP address, normal
+      request headers, and which organization or contest was asked for. Requests to the
+      Codeforces API are made anonymously, with cookies deliberately omitted. Requests for
+      organization and profile <em>pages</em> are made with your browser's existing Codeforces
+      cookies, because that is how those pages render while you are signed in &mdash; the
+      extension never reads or stores the cookie values themselves.
+    </p>
+    <p class="note">
+      Codeforces handles anything it receives under
+      <a href="https://codeforces.com/privacy" rel="noopener">its own privacy policy</a>, which
+      is outside my control.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="never">
+    <h2 class="section-title" id="never">What it never does</h2>
+    <ul class="steps">
+      <li>No advertising, analytics, telemetry or tracking of any kind.</li>
+      <li>No selling, renting or sharing of data &mdash; there is none collected to sell.</li>
+      <li>No developer-operated server, database or log.</li>
+      <li>No third-party service receives anything from the extension.</li>
+      <li>No remote code: every line of JavaScript ships inside the package, and network responses are treated as data, never executed.</li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="control">
+    <h2 class="section-title" id="control">Your control over it</h2>
+    <ul class="steps">
+      <li>Change the organization, switch between automatic and manual, or edit extra handles at any time from the extension's settings.</li>
+      <li><strong>Refresh members</strong> discards the saved roster and reads it again.</li>
+      <li>Removing the extension deletes everything it stored. There is no separate deletion request to make, because there is no copy anywhere else.</li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="changes">
+    <h2 class="section-title" id="changes">Changes to this policy</h2>
+    <p class="prose">
+      If the extension ever starts handling data differently, this page changes with it and the
+      version and date at the top move forward. The same policy ships inside the extension and
+      is linked from its settings page, so the two stay in step.
+    </p>
+  </section>
+
+  <section class="section" aria-labelledby="contact">
+    <h2 class="section-title" id="contact">Contact</h2>
+    <p class="prose">
+      Questions about this policy, or about the extension, go to
+      <a href="mailto:asilkhalifa11@gmail.com">asilkhalifa11@gmail.com</a>.
+    </p>
+  </section>
+
+  <p class="foot">
+    Independent project &middot; not affiliated with Codeforces or any university.<br>
+    <a href="/university-standings/">About the extension</a> &middot;
+    Built by <a href="/">Asil Khalifa</a>.
+  </p>
+
+</main>
+
+</body>
+</html>
